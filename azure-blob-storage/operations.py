@@ -34,7 +34,6 @@ class AzureBlobStorage(object):
     def make_rest_api(self, method, endpoint, params={}, query_string='', data=None, verify_ssl=False, headers={},
                       return_header_response=False, destination_endpoint=''):
         try:
-            params = remove_empty_params(params)
             headers['Content-Type'] = 'application/json'
             headers['Accept'] = 'application/json'
             if destination_endpoint:
@@ -47,12 +46,10 @@ class AzureBlobStorage(object):
             blob_storage_service_endpoint += self.sas_token
             if query_string:
                 blob_storage_service_endpoint += '&' + query_string
-            logger.error('Rest API Endpoint: {}'.format(blob_storage_service_endpoint))
+            logger.debug('Rest API Endpoint: {}'.format(blob_storage_service_endpoint))
             response = requests.request(method, blob_storage_service_endpoint, headers=headers, params=params,
                                         data=data, verify=verify_ssl)
-            logger.error('Rest API Status Code: {}'.format(response.status_code))
-            # logger.error('Rest API Response: {}'.format(response.text))
-            logger.error('Rest API Response Headers: {}'.format(response.headers))
+            logger.debug('Rest API Status Code: {}'.format(response.status_code))
             if response.ok:
                 if return_header_response:
                     return response.headers
@@ -220,3 +217,4 @@ operations = {
     'get_blob_metadata': get_blob_metadata,
     'get_blob_tags': get_blob_tags
 }
+
