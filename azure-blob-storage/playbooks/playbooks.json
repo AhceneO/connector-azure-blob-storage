@@ -3,12 +3,12 @@
   "data": [
     {
       "@type": "WorkflowCollection",
-      "name": "Sample - Azure Blob Storage - 1.0.0",
-      "description": "Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage is optimized for storing massive amounts of unstructured data. Azure Blob Storage stores text and binary data as objects in the cloud. This connector helps you to perform REST operations for working with blobs in the Blob service.",
+      "name": "Sample - Azure Blob Storage - 1.1.0",
+      "description": "Sample playbooks for \"Azure Blob Storage\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
       "visible": true,
-      "image": null,
-      "uuid": "af99f462-6274-4b54-81e6-5e16a5a5c890",
-      "id": 368,
+      "image": "",
+      "uuid": "c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+      "id": 259,
       "deletedAt": null,
       "importedBy": [],
       "recordTags": [
@@ -19,9 +19,574 @@
         {
           "@type": "Workflow",
           "triggerLimit": null,
-          "name": "List Blob",
+          "name": "Delete Blob",
           "aliasName": null,
-          "tag": "#Azure Blob Storage",
+          "tag": null,
+          "description": "Marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711106961,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/c2974111-64b7-43d3-9301-2a28f8b14107",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Delete Blob",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "",
+                  "snapshot": "",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "version_id": "",
+                  "container_name": "test-container"
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "delete_blob",
+                "operationTitle": "Delete Blob",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "165",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "f95ab037-c61e-4f63-a8a9-cb80252dfb70"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "154d63a4-0d81-4824-b057-dc78232396ce",
+                "title": "Azure Blob Storage: Delete Blob",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "c2974111-64b7-43d3-9301-2a28f8b14107"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Copy Blob",
+              "targetStep": "/api/3/workflow_steps/f95ab037-c61e-4f63-a8a9-cb80252dfb70",
+              "sourceStep": "/api/3/workflow_steps/c2974111-64b7-43d3-9301-2a28f8b14107",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "0bdb8e33-42d9-435c-9a0d-67a254138554"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "0851c0aa-dc2b-4b70-8ec3-507d74f4fa37",
+          "id": 2916,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Blob",
+          "aliasName": null,
+          "tag": null,
+          "description": "Downloads a blob from the Azure blob storage and stores it in the FortiSOAR™ attachment module as an attachment",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711129407,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/d84fd1dd-ff25-4be8-b807-b8e9c336ae60",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Blob",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "10",
+                  "snapshot": "2024-03-05T17:43:22.065Z",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "version_id": "",
+                  "container_name": ""
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "get_blob",
+                "operationTitle": "Get Blob",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "8b0a479d-cdda-4344-982a-47f58dff3377"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "632a34bb-7e6d-4b64-b5fb-3025d83b8fad",
+                "title": "Azure Blob Storage: Get Blob",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "d84fd1dd-ff25-4be8-b807-b8e9c336ae60"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Blob",
+              "targetStep": "/api/3/workflow_steps/8b0a479d-cdda-4344-982a-47f58dff3377",
+              "sourceStep": "/api/3/workflow_steps/d84fd1dd-ff25-4be8-b807-b8e9c336ae60",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "805167e6-c330-4de2-8ae2-c541e1c91053"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "1ec4e4f9-77b9-4e4a-8496-cbbd03ef93f0",
+          "id": 2917,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Blob Tags",
+          "aliasName": null,
+          "tag": null,
+          "description": "Retrieves all user-defined tags for the specified blob, version, or snapshot",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711115094,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/363346ec-a558-432b-9a4f-032a1b88c30c",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Blob Tags",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "",
+                  "snapshot": "",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "versionid": "",
+                  "container_name": ""
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "get_blob_tags",
+                "operationTitle": "Get Blob Tags",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "f7477d84-4eb3-4e99-befb-1ce2dc9db395"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "3a550dbb-5d08-4998-a68e-d850b3d21392",
+                "title": "Azure Blob Storage: Get Blob Tags",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "363346ec-a558-432b-9a4f-032a1b88c30c"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Blob Metadata",
+              "targetStep": "/api/3/workflow_steps/f7477d84-4eb3-4e99-befb-1ce2dc9db395",
+              "sourceStep": "/api/3/workflow_steps/363346ec-a558-432b-9a4f-032a1b88c30c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "dbb16d2f-da01-4c50-80cc-387f863104ec"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "394f98b7-c6de-41a6-a7d3-4cc2bcc308ba",
+          "id": 2918,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Abort Copy Blob",
+          "aliasName": null,
+          "tag": null,
+          "description": "Cancels a pending Copy Blob operation, and leaves a destination blob with zero length and full metadata",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711115728,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/7c7bc5df-7307-475d-876c-eda6c50add98",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Copy Blob",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "copy_id": "0ad34cbc-cc45-4dda-a2f4-c40e1efe2a03",
+                  "timeout": "",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "container_name": "azure-storage-container"
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "abort_copy_blob",
+                "operationTitle": "Abort Copy Blob",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "59436587-44a5-48ed-a02c-665a1991493b"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "f679b1c5-64c3-4bef-92e4-0403f9444290",
+                "title": "Azure Blob Storage: Abort Copy Blob",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "7c7bc5df-7307-475d-876c-eda6c50add98"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Copy Blob",
+              "targetStep": "/api/3/workflow_steps/59436587-44a5-48ed-a02c-665a1991493b",
+              "sourceStep": "/api/3/workflow_steps/7c7bc5df-7307-475d-876c-eda6c50add98",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "fb346bed-e34a-4f0c-a483-ce335b333691"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "58354875-9da8-4cfb-99e8-dde39f0947c8",
+          "id": 2919,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Copy Blob",
+          "aliasName": null,
+          "tag": null,
+          "description": "Copies a blob from one container to another container within the storage account",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711106648,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/47205902-3cfa-4cf3-ac8f-1007e8577d00",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Copy Blob",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "100",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "source_container_name": "azure-storage-container",
+                  "destination_container_name": "test-container"
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "copy_blob",
+                "operationTitle": "Copy Blob",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "165",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "928c9e81-8f15-403f-a0ca-298e65e60e82"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "d7a8ab6c-c684-490f-82b5-88e2ae2d113a",
+                "title": "Azure Blob Storage: Copy Blob",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "47205902-3cfa-4cf3-ac8f-1007e8577d00"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Copy Blob",
+              "targetStep": "/api/3/workflow_steps/928c9e81-8f15-403f-a0ca-298e65e60e82",
+              "sourceStep": "/api/3/workflow_steps/47205902-3cfa-4cf3-ac8f-1007e8577d00",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "5756b98e-451f-4171-baa4-9332cf1915ab"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "6114e88a-43d6-46d7-add0-b04f6aa9d394",
+          "id": 2920,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "List Blobs",
+          "aliasName": null,
+          "tag": "",
           "description": "The List Blob operation returns a list of the blobs under the specified container.",
           "isActive": false,
           "debug": false,
@@ -29,11 +594,32 @@
           "remoteExecutableFlag": false,
           "parameters": [],
           "synchronous": false,
-          "lastModifyDate": 1687336484,
-          "collection": "/api/3/workflow_collections/af99f462-6274-4b54-81e6-5e16a5a5c890",
+          "lastModifyDate": 1711077756,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
           "versions": [],
           "triggerStep": "/api/3/workflow_steps/2b14a061-4b59-4fcd-822a-44adc89ed991",
           "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "List Blobs",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": [],
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "list_blob",
+                "operationTitle": "List Blob",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "188",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "55ca4871-070c-462b-a1d3-ebcbff4154e0"
+            },
             {
               "@type": "WorkflowStep",
               "name": "Start",
@@ -60,26 +646,6 @@
               "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
               "group": null,
               "uuid": "2b14a061-4b59-4fcd-822a-44adc89ed991"
-            },
-            {
-              "@type": "WorkflowStep",
-              "name": "List Blob",
-              "description": null,
-              "arguments": {
-                "name": "Azure Blob Storage",
-                "config": "''",
-                "params": [],
-                "version": "1.0.0",
-                "connector": "azure-blob-storage",
-                "operation": "list_blob",
-                "operationTitle": "List Blob"
-              },
-              "status": null,
-              "top": "120",
-              "left": "188",
-              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
-              "group": null,
-              "uuid": "55ca4871-070c-462b-a1d3-ebcbff4154e0"
             }
           ],
           "routes": [
@@ -90,13 +656,14 @@
               "sourceStep": "/api/3/workflow_steps/2b14a061-4b59-4fcd-822a-44adc89ed991",
               "label": null,
               "isExecuted": false,
+              "group": null,
               "uuid": "c0a8274b-c191-4f4a-8366-f220b58c7a30"
             }
           ],
           "groups": [],
           "priority": null,
           "uuid": "615dfeaa-9157-47df-919a-e67d5781f809",
-          "id": 4694,
+          "id": 2921,
           "owners": [],
           "isPrivate": false,
           "deletedAt": null,
@@ -109,9 +676,116 @@
         {
           "@type": "Workflow",
           "triggerLimit": null,
-          "name": "Put Blob",
+          "name": "Get Blob Properties",
           "aliasName": null,
-          "tag": "#Azure Blob Storage",
+          "tag": null,
+          "description": "Retrieves all user-defined metadata, standard HTTP properties, and system properties for the blob. It doesn't return the content of the blob",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711082307,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/7aa181f4-4310-4130-8b95-27213e11b58e",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Blob Properties",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "",
+                  "snapshot": "",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "versionIid": "",
+                  "container_name": "azure-storage-container"
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "get_blob_properties",
+                "operationTitle": "Get Blob Properties",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "447642b1-e769-4dbb-bd76-8914c7678d4b"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "ff6bc5af-0a48-4724-8528-97e8bb22bf92",
+                "title": "Get Blob Properties: Azure Blob Storage",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "7aa181f4-4310-4130-8b95-27213e11b58e"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Blob Properties",
+              "targetStep": "/api/3/workflow_steps/447642b1-e769-4dbb-bd76-8914c7678d4b",
+              "sourceStep": "/api/3/workflow_steps/7aa181f4-4310-4130-8b95-27213e11b58e",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "d3a046b2-e8c5-44ac-b929-99a3c6c2fc6c"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "967dea6b-71bd-412b-a541-a97243601d72",
+          "id": 2922,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Create Blob",
+          "aliasName": null,
+          "tag": "",
           "description": "Creates a new blob or replaces an existing blob within a container.",
           "isActive": false,
           "debug": false,
@@ -119,27 +793,34 @@
           "remoteExecutableFlag": false,
           "parameters": [],
           "synchronous": false,
-          "lastModifyDate": 1687336484,
-          "collection": "/api/3/workflow_collections/af99f462-6274-4b54-81e6-5e16a5a5c890",
+          "lastModifyDate": 1711125990,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
           "versions": [],
           "triggerStep": "/api/3/workflow_steps/731a17a1-eac9-49fa-9b3f-34b6db92ed22",
           "steps": [
             {
               "@type": "WorkflowStep",
-              "name": "Put Blob",
+              "name": "Create Blob",
               "description": null,
               "arguments": {
                 "name": "Azure Blob Storage",
-                "config": "''",
-                "params": [],
-                "version": "1.0.0",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "input": "Attachment ID",
+                  "value": "53517d29-0c3b-433a-bb92-b4994458829d",
+                  "blob_name": "test.png",
+                  "blob_type": "AppendBlob",
+                  "container_name": ""
+                },
+                "version": "1.1.0",
                 "connector": "azure-blob-storage",
                 "operation": "create_blob",
-                "operationTitle": "Put Blob"
+                "operationTitle": "Put Blob",
+                "step_variables": []
               },
               "status": null,
               "top": "120",
-              "left": "188",
+              "left": "180",
               "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
               "group": null,
               "uuid": "4cc3a644-aff9-4116-8bc4-e817e4e00a73"
@@ -150,18 +831,26 @@
               "description": null,
               "arguments": {
                 "route": "fc4e61ea-c6ad-4b2b-8d7d-6067922d8985",
-                "title": "Azure Blob Storage: Put Blob",
+                "title": "Azure Blob Storage: Create Blob",
                 "resources": [
                   "alerts"
                 ],
+                "__triggerLimit": true,
                 "inputVariables": [],
                 "step_variables": {
                   "input": {
-                    "records": "{{vars.input.records[0]}}"
+                    "params": [],
+                    "records": "{{vars.input.records}}"
                   }
                 },
+                "triggerOnSource": true,
                 "executeButtonText": "Execute",
                 "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
                 "singleRecordExecution": false
               },
               "status": null,
@@ -180,13 +869,121 @@
               "sourceStep": "/api/3/workflow_steps/731a17a1-eac9-49fa-9b3f-34b6db92ed22",
               "label": null,
               "isExecuted": false,
+              "group": null,
               "uuid": "b580593e-c600-442e-ab0b-3fa667ca1ebc"
             }
           ],
           "groups": [],
           "priority": null,
           "uuid": "a1f0f1d7-9605-428c-9c2a-32352d0a6fae",
-          "id": 4693,
+          "id": 2923,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "Azure",
+            "azure-blob-storage"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Blob Metadata",
+          "aliasName": null,
+          "tag": null,
+          "description": "Retrieves all user-defined metadata for the specified blob or snapshot",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1711080931,
+          "collection": "/api/3/workflow_collections/c657ecc6-39b8-4a5e-b8c2-dd0a5d47b504",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/b82c9d6e-4426-4b9a-a9ac-cfe141b7b7da",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Blob Metadata",
+              "description": null,
+              "arguments": {
+                "name": "Azure Blob Storage",
+                "config": "1e44f6b8-c898-4e7e-9dab-9108f3e54c8c",
+                "params": {
+                  "timeout": "",
+                  "snapshot": "",
+                  "blob_name": "FreshServiceDesk 1.zip",
+                  "versionid": "",
+                  "container_name": ""
+                },
+                "version": "1.1.0",
+                "connector": "azure-blob-storage",
+                "operation": "get_blob_metadata",
+                "operationTitle": "Get Blob Metadata",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "120",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "9c8a4d41-d587-4550-8d37-23f6fcf1dd58"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "f9148b47-62d0-47ac-bf73-d02b211b1e17",
+                "title": "Azure Blob Storage: Get Blob Metadata",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "b82c9d6e-4426-4b9a-a9ac-cfe141b7b7da"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Blob Metadata",
+              "targetStep": "/api/3/workflow_steps/9c8a4d41-d587-4550-8d37-23f6fcf1dd58",
+              "sourceStep": "/api/3/workflow_steps/b82c9d6e-4426-4b9a-a9ac-cfe141b7b7da",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "d4ca6dfb-badd-4052-919c-d7e1a2af3b62"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "e8d4f46c-3e24-4bc3-9fb5-79f56a51451f",
+          "id": 2924,
           "owners": [],
           "isPrivate": false,
           "deletedAt": null,

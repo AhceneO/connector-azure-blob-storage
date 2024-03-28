@@ -1,146 +1,569 @@
 {
-    "name": "azure-blob-storage",
-    "version": "1.0.0",
-    "label": "Azure Blob Storage",
-    "description": "Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage is optimized for storing massive amounts of unstructured data. Azure Blob Storage stores text and binary data as objects in the cloud. This connector helps you to perform REST operations for working with blobs in the Blob service.",
-    "publisher": "spryIQ.co",
-    "icon_small_name": "small.png",
-    "icon_large_name": "large.png",
-    "category": "IT Services",
-    "help_online": "https://github.com/fortinet-fortisoar/connector-azure-blob-storage/blob/release/1.0.0/docs/AzureBlobStorageConnectorDoc.md",
-    "cs_approved": false,
-    "cs_compatible": true,
-    "configuration": {
-        "fields": [
-            {
-                "title": "Storage Account Name",
-                "description": "Name of the storage account from which you want to perform the automated operations.",
-                "required": true,
-                "editable": true,
-                "visible": true,
-                "type": "text",
-                "name": "account_name"
-            },
-            {
-                "title": "Account SAS Token",
-                "name": "sas_token",
-                "type": "password",
-                "description": "Account Shared Access Signature(SAS) to perform automated operations on Blob Storage Service.",
-                "tooltip": "Account Shared Access Signature(SAS) to perform automated operations on Blob Storage Service.",
-                "required": true,
-                "editable": true,
-                "visible": true
-            },
-            {
-                "title": "Container Name",
-                "required": true,
-                "editable": true,
-                "visible": true,
-                "type": "text",
-                "name": "container_name",
-                "description": "Specify the name of the azure container within your storage account."
-            },
-            {
-                "title": "Verify SSL",
-                "required": false,
-                "editable": true,
-                "visible": true,
-                "type": "checkbox",
-                "name": "verify_ssl",
-                "value": true,
-                "description": "Specifies whether the SSL certificate for the server is to be verified or not.\nBy default, this option is set to True."
-            }
-        ]
-    },
-    "operations": [
-        {
-            "title": "Put Blob",
-            "description": "Creates a new blob or replaces an existing blob within a container.",
-            "operation": "create_blob",
-            "category": "investigation",
-            "annotation": "create_blob",
-            "output_schema": {
-                "status": "",
-                "message": ""
-            },
-            "enabled": true,
-            "parameters": [
-                {
-                    "title": "Blob Name",
-                    "required": true,
-                    "editable": true,
-                    "visible": true,
-                    "type": "text",
-                    "name": "blob_name",
-                    "tooltip": "Specify the name of the blob to create or replace.",
-                    "description": "Specify the name of the blob to create or replace."
+  "name": "azure-blob-storage",
+  "version": "1.1.0",
+  "label": "Azure Blob Storage",
+  "description": "Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage is optimized for storing massive amounts of unstructured data. Azure Blob Storage stores text and binary data as objects in the cloud. This connector helps you to perform REST operations for working with blobs in the Blob service.",
+  "publisher": "Fortinet",
+  "icon_small_name": "small.png",
+  "icon_large_name": "large.png",
+  "category": "IT Services",
+  "help_online": "",
+  "cs_approved": true,
+  "cs_compatible": true,
+  "configuration": {
+    "fields": [
+      {
+        "title": "Storage Account Name",
+        "description": "Name of the storage account from which you want to perform the automated operations.",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "type": "text",
+        "name": "account_name"
+      },
+      {
+        "title": "Account SAS Token",
+        "name": "sas_token",
+        "type": "password",
+        "description": "Account Shared Access Signature(SAS) to perform automated operations on Blob Storage Service.",
+        "tooltip": "Account Shared Access Signature(SAS) to perform automated operations on Blob Storage Service.",
+        "required": true,
+        "editable": true,
+        "visible": true
+      },
+      {
+        "title": "Container Name",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "type": "text",
+        "name": "container_name",
+        "description": "Specify the name of the azure container within your storage account."
+      },
+      {
+        "title": "Verify SSL",
+        "required": false,
+        "editable": true,
+        "visible": true,
+        "type": "checkbox",
+        "name": "verify_ssl",
+        "value": true,
+        "description": "Specifies whether the SSL certificate for the server is to be verified or not.\nBy default, this option is set to True."
+      }
+    ]
+  },
+  "operations": [
+    {
+      "title": "List Blobs",
+      "description": "Retrieves a list of the blobs under the specified container",
+      "operation": "list_blob",
+      "category": "investigation",
+      "annotation": "list_blob",
+      "output_schema": {
+        "EnumerationResults": {
+          "@ServiceEndpoint": "",
+          "@ContainerName": "",
+          "Blobs": {
+            "Blob": [
+              {
+                "Name": "",
+                "Properties": {
+                  "Creation-Time": "",
+                  "Last-Modified": "",
+                  "Etag": "",
+                  "Content-Length": "",
+                  "Content-Type": "",
+                  "Content-Encoding": "",
+                  "Content-Language": "",
+                  "Content-CRC64": "",
+                  "Content-MD5": "",
+                  "Cache-Control": "",
+                  "Content-Disposition": "",
+                  "BlobType": "",
+                  "AccessTier": "",
+                  "AccessTierInferred": "",
+                  "LeaseStatus": "",
+                  "LeaseState": "",
+                  "ServerEncrypted": ""
                 },
-                {
-                    "name": "value",
-                    "title": "File Attachment/IRI Reference",
-                    "type": "text",
-                    "editable": true,
-                    "visible": true,
-                    "required": true,
-                    "description": "File Attachment/IRI Reference that is used to access the attachment metadata from the FortiSOAR™ Attachments module. In the playbook, if you select 'Attachment ID', this defaults to the {{vars.attachment_id}} value or if you select 'File IRI', then this defaults to the {{vars.file_iri}} value."
-                },
-                {
-                    "name": "input",
-                    "title": "Type",
-                    "type": "select",
-                    "options": [
-                      "Attachment ID",
-                      "File IRI"
-                    ],
-                    "editable": true,
-                    "visible": true,
-                    "required": true,
-                    "description": "Choose between Attachment ID or a File IRI."
-                }
+                "OrMetadata": ""
+              }
             ]
+          },
+          "NextMarker": ""
+        }
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container from which you want to retrieve the list of blobs. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container from which you want to retrieve the list of blobs. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Create Blob",
+      "description": "Creates a new blob or replaces an existing blob within a container",
+      "operation": "create_blob",
+      "category": "investigation",
+      "annotation": "create_blob",
+      "output_schema": {
+        "Date": "",
+        "ETag": "",
+        "Server": "",
+        "result": "",
+        "status": "",
+        "Content-MD5": "",
+        "x-ms-version": "",
+        "Last-Modified": "",
+        "Content-Length": "",
+        "x-ms-request-id": "",
+        "x-ms-content-crc64": "",
+        "x-ms-request-server-encrypted": ""
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container in which you want to create a blob. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container in which you want to create a blob. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
         },
         {
-            "title": "List Blob",
-            "description": "The List Blob operation returns a list of the blobs under the specified container.",
-            "operation": "list_blob",
-            "category": "investigation",
-            "annotation": "list_blob",
-            "output_schema": {
-                "EnumerationResults": {
-                    "@ServiceEndpoint": "",
-                    "@ContainerName": "",
-                    "Blobs": {
-                        "Blob": [
-                            {
-                                "Name": "",
-                                "Properties": {
-                                    "Creation-Time": "",
-                                    "Last-Modified": "",
-                                    "Etag": "",
-                                    "Content-Length": "",
-                                    "Content-Type": "",
-                                    "Content-Encoding": "",
-                                    "Content-Language": "",
-                                    "Content-CRC64": "",
-                                    "Content-MD5": "",
-                                    "Cache-Control": "",
-                                    "Content-Disposition": "",
-                                    "BlobType": "",
-                                    "AccessTier": "",
-                                    "AccessTierInferred": "",
-                                    "LeaseStatus": "",
-                                    "LeaseState": "",
-                                    "ServerEncrypted": ""
-                                },
-                                "OrMetadata": ""
-                            }
-                        ]
-                    },
-                    "NextMarker": ""
-                }
-            },
-            "enabled": true,
-            "parameters": []
+          "title": "Blob Name",
+          "required": true,
+          "editable": true,
+          "visible": true,
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob to create or replace.",
+          "description": "Specify the name of the blob to create or replace."
+        },
+        {
+          "name": "input",
+          "title": "Type",
+          "type": "select",
+          "options": [
+            "Attachment ID",
+            "File IRI"
+          ],
+          "editable": true,
+          "visible": true,
+          "required": true,
+          "description": "Choose between an Attachment ID or a File IRI based on whether users can upload a file to Azure Blob storage",
+          "onchange": {
+            "Attachment ID": [
+              {
+                "name": "value",
+                "title": "Attachment ID",
+                "type": "text",
+                "editable": true,
+                "visible": true,
+                "required": true,
+                "description": "Attachment ID Reference that is used to access the attachment metadata from the FortiSOAR™ Attachments module.",
+                "tooltip": "Attachment ID Reference that is used to access the attachment metadata from the FortiSOAR™ Attachments module."
+              }
+            ],
+            "File IRI": [
+              {
+                "name": "value",
+                "title": "File IRI",
+                "type": "text",
+                "editable": true,
+                "visible": true,
+                "required": true,
+                "description": "File IRI ID Reference that is used to access the attachment metadata from the FortiSOAR™ Attachments module.",
+                "tooltip": "File IRI ID Reference that is used to access the attachment metadata from the FortiSOAR™ Attachments module."
+              }
+            ]
+          }
+        },
+        {
+          "title": "Timeout",
+          "type": "text",
+          "name": "timeout",
+          "tooltip": "Specifies the server timeout interval elapses before the service has finished processing the request. The default and maximum value is 30 seconds",
+          "description": "Specifies the server timeout interval elapses before the service has finished processing the request. The default and maximum value is 30 seconds",
+          "required": false,
+          "editable": true,
+          "visible": true
         }
-    ]
+      ]
+    },
+    {
+      "title": "Get Blob",
+      "description": "Downloads a blob from the Azure blob storage and stores it in the FortiSOAR™ attachment module as an attachment",
+      "operation": "get_blob",
+      "category": "investigation",
+      "annotation": "get_blob",
+      "output_schema": {
+        "id": "",
+        "@id": "",
+        "cVEs": [],
+        "file": {
+          "id": "",
+          "@id": "",
+          "size": "",
+          "uuid": "",
+          "@type": "",
+          "assignee": "",
+          "filename": "",
+          "metadata": [],
+          "mimeType": "",
+          "thumbnail": "",
+          "uploadDate": ""
+        },
+        "name": "",
+        "type": "",
+        "uuid": "",
+        "@type": "",
+        "tasks": [],
+        "alerts": [],
+        "assets": [],
+        "owners": [],
+        "people": [],
+        "@context": "",
+        "assignee": "",
+        "comments": [],
+        "warrooms": [],
+        "incidents": [],
+        "createDate": "",
+        "createUser": {
+          "id": "",
+          "@id": "",
+          "name": "",
+          "uuid": "",
+          "@type": "",
+          "avatar": "",
+          "userId": "",
+          "userType": "",
+          "createDate": "",
+          "createUser": "",
+          "modifyDate": "",
+          "modifyUser": ""
+        },
+        "indicators": [],
+        "modifyDate": "",
+        "modifyUser": {
+          "id": "",
+          "@id": "",
+          "name": "",
+          "uuid": "",
+          "@type": "",
+          "avatar": "",
+          "userId": "",
+          "userType": "",
+          "createDate": "",
+          "createUser": "",
+          "modifyDate": "",
+          "modifyUser": ""
+        },
+        "recordTags": [],
+        "userOwners": [],
+        "workspaces": [],
+        "description": "",
+        "vulnerabilities": []
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container to retrieve the specified blob from. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container to retrieve the specified blob from. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob for which you want to retrieve specific blob details",
+          "description": "Specify the name of the blob for which you want to retrieve specific blob details",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Copy Blob",
+      "description": "Copies a blob to a destination within the storage account",
+      "operation": "copy_blob",
+      "category": "investigation",
+      "annotation": "copy_blob",
+      "output_schema": {
+        "Date": "",
+        "ETag": "",
+        "Server": "",
+        "x-ms-copy-id": "",
+        "x-ms-version": "",
+        "Last-Modified": "",
+        "Content-Length": "",
+        "x-ms-request-id": "",
+        "x-ms-copy-status": ""
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Source Container Name",
+          "type": "text",
+          "name": "source_container_name",
+          "tooltip": "Specify the name of the source container from which you want to copy the blob.",
+          "description": "Specify the name of the container to which you want to copy the blob.",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of your destination blob name",
+          "description": "Specify the name of your destination blob name",
+          "required": true,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Destination Container Name",
+          "type": "text",
+          "name": "destination_container_name",
+          "tooltip": "Specify the name of the destination container to which you want to copy the blob.",
+          "description": "Specify the name of the destination container to which you want to copy the blob.",
+          "required": false,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Delete Blob",
+      "description": "Marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection",
+      "operation": "delete_blob",
+      "category": "investigation",
+      "annotation": "delete_blob",
+      "output_schema": {
+        "Date": "",
+        "Server": "",
+        "x-ms-version": "",
+        "Content-Length": "",
+        "x-ms-request-id": "",
+        "x-ms-delete-type-permanent": ""
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container from which you want to delete the blob. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container to which you want to copy the blob. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob you want to delete",
+          "description": "Specify the name of the blob you want to delete",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Abort Copy Blob",
+      "description": "Cancels a pending Copy Blob operation, and leaves a destination blob with zero length and full metadata",
+      "operation": "abort_copy_blob",
+      "category": "investigation",
+      "annotation": "abort_copy_blob",
+      "output_schema": {},
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container from which you want to abort the copy blob. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container from which you want to abort the copy blob. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of your destination blob",
+          "description": "Specify the name of your destination blob",
+          "required": true,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Copy Blob ID",
+          "type": "text",
+          "name": "copy_id",
+          "tooltip": "Specify the copy identifier provided in the x-ms-copy-id header of the original Copy Blob action",
+          "description": "Specify the copy identifier provided in the x-ms-copy-id header of the original Copy Blob action",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Get Blob Properties",
+      "description": "Retrieves all user-defined metadata, standard HTTP properties, and system properties for the blob. It doesn't return the content of the blob",
+      "operation": "get_blob_properties",
+      "category": "investigation",
+      "annotation": "get_blob_properties",
+      "output_schema": {
+        "Date": "",
+        "ETag": "",
+        "Server": "",
+        "Content-MD5": "",
+        "x-ms-meta-k": "",
+        "Content-Type": "",
+        "x-ms-meta-k2": "",
+        "x-ms-meta-k3": "",
+        "x-ms-version": "",
+        "Accept-Ranges": "",
+        "Last-Modified": "",
+        "Content-Length": "",
+        "x-ms-blob-type": "",
+        "x-ms-tag-count": "",
+        "x-ms-request-id": "",
+        "x-ms-access-tier": "",
+        "x-ms-lease-state": "",
+        "x-ms-lease-status": "",
+        "x-ms-creation-time": "",
+        "x-ms-server-encrypted": "",
+        "x-ms-access-tier-inferred": ""
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container to retrieve the specified blob Properties from. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container to retrieve the specified blob Properties from. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob for which you want to retrieve the properties",
+          "description": "Specify the name of the blob for which you want to retrieve the properties",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Get Blob Metadata",
+      "description": "Retrieves all user-defined metadata for the specified blob or snapshot",
+      "operation": "get_blob_metadata",
+      "category": "investigation",
+      "annotation": "get_blob_metadata",
+      "output_schema": {
+        "Date": "",
+        "ETag": "",
+        "Server": "",
+        "x-ms-meta-k": "",
+        "x-ms-meta-k2": "",
+        "x-ms-meta-k3": "",
+        "x-ms-version": "",
+        "Last-Modified": "",
+        "Content-Length": "",
+        "x-ms-request-id": ""
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container to retrieve all user-defined metadata for the specified blob or snapshot. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container to retrieve all user-defined metadata for the specified blob or snapshot. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob for which you want to retrieve all user-defined metadata for the specified blob or snapshot",
+          "description": "Specify the name of the blob for which you want to retrieve all user-defined metadata for the specified blob or snapshot",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "title": "Get Blob Tags",
+      "description": "Retrieves all user-defined tags for the specified blob, version, or snapshot",
+      "operation": "get_blob_tags",
+      "category": "investigation",
+      "annotation": "get_blob_tags",
+      "output_schema": {
+        "Tags": {
+          "TagSet": {
+            "Tag": [
+              {
+                "Key": "",
+                "Value": ""
+              }
+            ]
+          }
+        }
+      },
+      "enabled": true,
+      "parameters": [
+        {
+          "title": "Container Name",
+          "type": "text",
+          "name": "container_name",
+          "tooltip": "Specify the name of the container to retrieve all user-defined tags for the specified blob or snapshot. If this value is not specified, then the default container name value is used from the configuration",
+          "description": "Specify the name of the container to retrieve all user-defined tags for the specified blob or snapshot. If this value is not specified, then the default container name value is used from the configuration",
+          "required": false,
+          "editable": true,
+          "visible": true
+        },
+        {
+          "title": "Blob Name",
+          "type": "text",
+          "name": "blob_name",
+          "tooltip": "Specify the name of the blob for which you want to retrieve all user-defined tags for the specified blob or snapshot",
+          "description": "Specify the name of the blob for which you want to retrieve all user-defined tags for the specified blob or snapshot",
+          "required": true,
+          "editable": true,
+          "visible": true
+        }
+      ]
+    }
+  ]
 }
