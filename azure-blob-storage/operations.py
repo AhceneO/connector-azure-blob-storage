@@ -32,7 +32,7 @@ class AzureBlobStorage(object):
         self.azure_storage_endpoint = f'https://{self.account_name}.blob.core.windows.net'
 
     def make_rest_api(self, method, endpoint, params={}, query_string='', data=None, verify_ssl=False, headers={},
-                      return_header_response=False, destination_endpoint=''):
+                      return_header_response=False, return_file_content=False, destination_endpoint=''):
         try:
             headers['Content-Type'] = 'application/json'
             headers['Accept'] = 'application/json'
@@ -54,7 +54,9 @@ class AzureBlobStorage(object):
                 if return_header_response:
                     return response.headers
                 content_type = response.headers.get('Content-Type')
-                if response.text != "" and 'application/xml' in content_type:
+                if return_file_content:
+                    return response.content
+                elif response.text != "" and 'application/xml' in content_type:
                     return json.loads(json.dumps(xmltodict.parse(response.content.decode('utf-8'))))
                 elif response.text != "" and 'application/json' in content_type:
                     return response.json()
@@ -133,12 +135,13 @@ def get_blob(config, params):
     blob_name = params.pop('blob_name', '')
     endpoint = f'/{blob_name}'
     params['snapshot']='2024-03-05'
-    blob_content = az_blob.make_rest_api("GET", endpoint)
+    blob_content = az_blob.make_rest_api("GET", endpoint, return_file_content=True)
     path = join(settings.TMP_FILE_ROOT, blob_name)
     with open(path, 'wb') as fp:
         fp.write(blob_content)
     attach_response = upload_file_to_cyops(file_path=blob_name, filename=blob_name,
                                            name=blob_name, create_attachment=True)
+
     return attach_response
 
 
