@@ -15,6 +15,7 @@ from connectors.cyops_utilities.builtins import download_file_from_cyops
 from connectors.cyops_utilities.builtins import upload_file_to_cyops
 from django.conf import settings
 from integrations.crudhub import make_request
+from connectors.cyops_utilities.builtins import save_file_in_env
 
 logger = get_logger('azure-blob-storage')
 
@@ -96,12 +97,14 @@ def _get_file_iri(params):
     return file_iri
 
 
-def get_file_file_content(file_iri):
+def get_file_file_content(file_iri, **kwargs):
     try:
+        env = kwargs.get('env', {})
         file_path = join('/tmp', download_file_from_cyops(file_iri)['cyops_file_path'])
         logger.info(file_path)
         with open(file_path, 'rb') as attachment:
             file_data = attachment.read()
+        save_file_in_env(env, file_path)
         if file_data:
             return file_data
         raise ConnectorError('The file must not be empty')
@@ -110,12 +113,12 @@ def get_file_file_content(file_iri):
         raise ConnectorError('Error in submitFile(): %s' % Err)
 
 
-def create_blob(config, params):
+def create_blob(config, params, **kwargs):
     headers = dict()
     az_blob = AzureBlobStorage(config, params)
     file_iri = _get_file_iri(params)
     logger.debug('File IRI: {}'.format(file_iri))
-    file_content = get_file_file_content(file_iri)
+    file_content = get_file_file_content(file_iri, **kwargs)
     headers["x-ms-blob-type"] = 'BlockBlob'
     headers["x-ms-blob-content-disposition"] = 'application/octet-stream'
     endpoint = f"/{params.get('blob_name')}"
@@ -125,12 +128,13 @@ def create_blob(config, params):
 
 
 
-def list_blob(config, params):
+def list_blob(config, params, **kwargs):
     az_blob = AzureBlobStorage(config, params)
     return az_blob.make_rest_api("GET", '', query_string='restype=container&comp=list')
 
 
-def get_blob(config, params):
+def get_blob(config, params, **kwargs):
+    env = kwargs.get('env', {})
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.pop('blob_name', '')
     endpoint = f'/{blob_name}'
@@ -139,13 +143,12 @@ def get_blob(config, params):
     path = join(settings.TMP_FILE_ROOT, blob_name)
     with open(path, 'wb') as fp:
         fp.write(blob_content)
-    attach_response = upload_file_to_cyops(file_path=blob_name, filename=blob_name,
-                                           name=blob_name, create_attachment=True)
-
+    attach_response = upload_file_to_cyops(file_path=blob_name, filename=blob_name, name=blob_name, create_attachment=True)
+    save_file_in_env(env, blob_name)
     return attach_response
 
 
-def copy_blob(config, params):
+def copy_blob(config, params, **kwargs):
     headers = dict()
     az_blob = AzureBlobStorage(config, params)
     source_container_name = params.pop('source_container_name', '')
@@ -159,14 +162,14 @@ def copy_blob(config, params):
                                  destination_endpoint=destination_endpoint, return_header_response=True)
 
 
-def delete_blob(config, params):
+def delete_blob(config, params, **kwargs):
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.pop('blob_name', '')
     endpoint = f'/{blob_name}'
     return az_blob.make_rest_api("DELETE", endpoint, config, return_header_response=True)
 
 
-def abort_copy_blob(config, params):
+def abort_copy_blob(config, params, **kwargs):
     headers = dict()
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.pop('blob_name', '')
@@ -177,21 +180,21 @@ def abort_copy_blob(config, params):
     return az_blob.make_rest_api("PUT", endpoint, config, query_string=query_string, headers=headers)
 
 
-def get_blob_properties(config, params):
+def get_blob_properties(config, params, **kwargs):
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.get('blob_name')
     endpoint = f'/{blob_name}'
     return az_blob.make_rest_api("HEAD", endpoint, config, return_header_response=True)
 
 
-def get_blob_metadata(config, params):
+def get_blob_metadata(config, params, **kwargs):
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.get('blob_name')
     endpoint = f'/{blob_name}'
     return az_blob.make_rest_api("GET", endpoint, config, query_string='comp=metadata', return_header_response=True)
 
 
-def get_blob_tags(config, params):
+def get_blob_tags(config, params, **kwargs):
     az_blob = AzureBlobStorage(config, params)
     blob_name = params.get('blob_name')
     endpoint = f'/{blob_name}'
