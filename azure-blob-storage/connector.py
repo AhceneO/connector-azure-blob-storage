@@ -15,7 +15,7 @@ class AzureBlobStorage(Connector):
     def execute(self, config, operation, params, **kwargs):
         try:
             operation = operations.get(operation)
-            return operation(config, params)
+            return operation(config, params,  **kwargs)
         except Exception as err:
             logger.exception(err)
             raise ConnectorError(err)
