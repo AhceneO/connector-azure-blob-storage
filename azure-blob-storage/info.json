@@ -323,7 +323,7 @@
           "name": "source_container_name",
           "tooltip": "Specify the name of the source container from which you want to copy the blob.",
           "description": "Specify the name of the container to which you want to copy the blob.",
-          "required": false,
+          "required": true,
           "editable": true,
           "visible": true
         },
@@ -343,7 +343,7 @@
           "name": "destination_container_name",
           "tooltip": "Specify the name of the destination container to which you want to copy the blob.",
           "description": "Specify the name of the destination container to which you want to copy the blob.",
-          "required": false,
+          "required": true,
           "editable": true,
           "visible": true
         }
