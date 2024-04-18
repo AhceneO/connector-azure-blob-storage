@@ -19,6 +19,14 @@ from connectors.cyops_utilities.builtins import save_file_in_env
 
 logger = get_logger('azure-blob-storage')
 
+error_msgs = {
+    400: 'Bad/Invalid Request',
+    401: 'Unauthorized: Invalid credentials or token provided failed to authorize',
+    403: 'Access Denied',
+    404: 'Not Found',
+    500: 'Internal Server Error',
+    503: 'Service Unavailable'
+}
 
 class AzureBlobStorage(object):
     def __init__(self, config, params):
@@ -66,7 +74,7 @@ class AzureBlobStorage(object):
             elif response.status_code==409:
                 return json.loads(json.dumps(xmltodict.parse(response.content.decode('utf-8'))))
             else:
-                raise ConnectorError("{0}".format(response.content))
+                raise ConnectorError("{0}: {1}".format(error_msgs.get(response.status_code, response.text),response.text))
         except requests.exceptions.SSLError:
             raise ConnectorError('SSL certificate validation failed')
         except requests.exceptions.ConnectTimeout:
